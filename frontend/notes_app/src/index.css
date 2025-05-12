@@ -23,8 +23,8 @@
     }
 
     .btn-primary {
-        background-color: #2B85FF;
-        @apply w-full text-sm text-white p-2 rounded my-1 hover:bg-blue-600;     
+        /* background-color: #2B85FF; */
+        @apply w-full text-sm text-white p-2 rounded my-1 bg-primary hover:bg-blue-600;     
     }
 
     .icon-btn{
@@ -45,4 +45,8 @@
         -ms-overflow-style: none;
         scrollbar-width: none;
     } 
+}
+
+@theme {
+    --color-primary: #2B85FF;
 }
