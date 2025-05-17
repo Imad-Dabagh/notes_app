@@ -280,6 +280,38 @@ app.put("/update-pinned/:noteId", authenticateToken, async (req, res) => {
   }
 });
 
+// ===== Search Notes
+app.get("/search-notes", authenticateToken, async (req, res) => {
+  const userId = req.user._id;
+  const { query } = req.query;
+
+  if (!query) {
+    return res
+      .status(400)
+      .json({ error: true, message: "Seach Query is Required" });
+  }
+
+  try {
+    const matchingNotes = await Note.find({
+      userId: userId,
+      $or: [
+        { title: { $regex: new RegExp(query, "i") } },
+        { content: { $regex: new RegExp(query, "i") } },
+      ],
+    });
+
+    return res.json({
+      error: false,
+      notes: matchingNotes,
+      message: "Notes Searched",
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal Server Error" });
+  }
+});
+
 app.listen(PORT, () => {
   connectDB();
   console.log(`Server is listening on port ${PORT}`);
